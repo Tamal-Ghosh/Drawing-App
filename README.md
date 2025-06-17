@@ -1,4 +1,4 @@
-#Drawing App
+Drawing App
 A simple yet powerful Android drawing application built with Kotlin. With this app, users can draw freely on a canvas, adjust brush size and color, undo strokes, set backgrounds, import images, and save their creations. Designed with a clean, modern Material UI.
 
 ✨ Features
