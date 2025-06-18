@@ -38,9 +38,6 @@ import java.io.FileOutputStream
 import kotlin.random.Random
 import androidx.core.content.ContextCompat
 
-
-
-
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var drawingView: DrawingView
@@ -57,6 +54,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var saveButton: ImageButton
     private lateinit var bgColorChangeButton: ImageButton
     private lateinit var redoButton: ImageButton
+    // Corrected color order: purple, red, green, blue, orange
+    private val recentColors = mutableListOf(
+        "#F006F0", // purple
+        "#FF1000", // red
+        "#0AFB14", // green
+        "#048EFA", // blue
+        "#FF4D00"  // orange
+    )
+    private lateinit var colorButtons: List<ImageButton>
 
     private enum class PermissionRequestType {
         GALLERY, SAVE
@@ -128,15 +134,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             insets
         }
 
-//        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
-//        setSupportActionBar(toolbar)
-
         // Color buttons
         purpleButton = findViewById(R.id.purple_button)
         redButton = findViewById(R.id.red_button)
         greenButton = findViewById(R.id.green_button)
         blueButton = findViewById(R.id.blue_button)
         orangeButton = findViewById(R.id.orange_button)
+        colorButtons = listOf(purpleButton, redButton, greenButton, blueButton, orangeButton)
+
+        updateColorButtons()
 
         // Tool buttons
         undoButton = findViewById(R.id.undo_button)
@@ -144,15 +150,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         gallaryButton = findViewById(R.id.gallery_button)
         brushButton = findViewById(R.id.brush_button)
         saveButton = findViewById(R.id.save_button)
-        bgColorChangeButton=findViewById(R.id.bg_colorPicker_button)
-        redoButton=findViewById(R.id.redo_button)
+        bgColorChangeButton = findViewById(R.id.bg_colorPicker_button)
+        redoButton = findViewById(R.id.redo_button)
 
         drawingView = findViewById(R.id.drawingView)
         drawingView.changeBrushSize(currentBrushSize)
 
         listOf(
             purpleButton, redButton, greenButton, blueButton, orangeButton,
-            undoButton, colorPickerButton, gallaryButton, saveButton,bgColorChangeButton,redoButton
+            undoButton, colorPickerButton, gallaryButton, saveButton, bgColorChangeButton, redoButton
         ).forEach {
             it.setOnClickListener(this)
         }
@@ -189,11 +195,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.id) {
-            R.id.purple_button -> drawingView.setColor("#F006F0")
-            R.id.blue_button -> drawingView.setColor("#048EFA")
-            R.id.green_button -> drawingView.setColor("#0AFB14")
-            R.id.orange_button -> drawingView.setColor("#FF4D00")
-            R.id.red_button -> drawingView.setColor("#FF1000")
+            R.id.purple_button -> drawingView.setColor(recentColors[0])
+            R.id.red_button    -> drawingView.setColor(recentColors[1])
+            R.id.green_button  -> drawingView.setColor(recentColors[2])
+            R.id.blue_button   -> drawingView.setColor(recentColors[3])
+            R.id.orange_button -> drawingView.setColor(recentColors[4])
             R.id.undo_button -> drawingView.undoPath()
             R.id.redo_button -> drawingView.redoPath()
             R.id.colorPicker_button -> showColorPickerDialog()
@@ -217,7 +223,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.save_button -> {
-                // For Android 10 and above, no need to check WRITE_EXTERNAL_STORAGE for saving with MediaStore
                 val layout = findViewById<ConstraintLayout>(R.id.Constraint_layout3)
                 val bitmap = getBitmapFromView(layout)
                 CoroutineScope(Dispatchers.IO).launch {
@@ -227,24 +232,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             brushButton.id -> {
                 showBrushChooserDialog()
             }
-            bgColorChangeButton.id->{
+            bgColorChangeButton.id -> {
                 showBgColorPickerDialog()
             }
         }
     }
 
-    private fun showBgColorPickerDialog()
-    {
-        val dialog= AmbilWarnaDialog(this, Color.BLACK,object : OnAmbilWarnaListener{
-            override fun onCancel(dialog: AmbilWarnaDialog?) {
-                TODO("Not yet implemented")
-            }
-
+    private fun showBgColorPickerDialog() {
+        val dialog = AmbilWarnaDialog(this, Color.BLACK, object : OnAmbilWarnaListener {
+            override fun onCancel(dialog: AmbilWarnaDialog?) {}
             override fun onOk(dialog: AmbilWarnaDialog?, color: Int) {
                 findViewById<ConstraintLayout>(R.id.Constraint_layout3).setBackgroundColor(color)
-               
             }
-
         })
         dialog.show()
     }
@@ -253,6 +252,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val dialog = AmbilWarnaDialog(this, Color.BLACK, object : OnAmbilWarnaListener {
             override fun onCancel(dialog: AmbilWarnaDialog?) {}
             override fun onOk(dialog: AmbilWarnaDialog?, color: Int) {
+                val lastColor=drawingView.getCurrentColor()
+                recentColors.add(0, String.format("#%06X", 0xFFFFFF and lastColor))
+                if (recentColors.size > 5) {
+                    recentColors.removeAt(recentColors.size - 1)
+                }
+                updateColorButtons()
                 drawingView.setColor(color)
             }
         })
@@ -342,8 +347,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-
-
+    private fun updateColorButtons() {
+        colorButtons.forEachIndexed { idx, btn ->
+            val parsedColor = Color.parseColor(recentColors[idx])
+            btn.setColorFilter(parsedColor)
+            btn.backgroundTintList = android.content.res.ColorStateList.valueOf(parsedColor)
+        }
+    }
 
     suspend fun saveImageToMediaStore(bitmap: Bitmap, context: Context) {
         withContext(Dispatchers.IO) {
@@ -352,7 +362,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
                 put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    // Save to Pictures/saved_image folder
                     put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/saved_image")
                     put(MediaStore.MediaColumns.IS_PENDING, 1)
                 }
@@ -380,5 +389,4 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
-
 }

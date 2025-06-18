@@ -163,7 +163,9 @@ class DrawingView(context: Context,attrs: AttributeSet) : View(context,attrs)
         }
     }
 
-
+ fun getCurrentColor(): Int {
+        return color
+    }
 
 
     internal inner class FingerPath(var color: Int, var brushThickness: Float): Path()
