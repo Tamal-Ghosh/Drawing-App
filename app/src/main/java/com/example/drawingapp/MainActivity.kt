@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var undoButton: ImageButton
     private lateinit var saveButton: ImageButton
     private lateinit var bgColorChangeButton: ImageButton
+    private lateinit var redoButton: ImageButton
 
     private enum class PermissionRequestType {
         GALLERY, SAVE
@@ -144,13 +145,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         brushButton = findViewById(R.id.brush_button)
         saveButton = findViewById(R.id.save_button)
         bgColorChangeButton=findViewById(R.id.bg_colorPicker_button)
+        redoButton=findViewById(R.id.redo_button)
 
         drawingView = findViewById(R.id.drawingView)
         drawingView.changeBrushSize(currentBrushSize)
 
         listOf(
             purpleButton, redButton, greenButton, blueButton, orangeButton,
-            undoButton, colorPickerButton, gallaryButton, saveButton,bgColorChangeButton
+            undoButton, colorPickerButton, gallaryButton, saveButton,bgColorChangeButton,redoButton
         ).forEach {
             it.setOnClickListener(this)
         }
@@ -193,6 +195,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.orange_button -> drawingView.setColor("#FF4D00")
             R.id.red_button -> drawingView.setColor("#FF1000")
             R.id.undo_button -> drawingView.undoPath()
+            R.id.redo_button -> drawingView.redoPath()
             R.id.colorPicker_button -> showColorPickerDialog()
             R.id.gallery_button -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

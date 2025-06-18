@@ -29,6 +29,7 @@ class DrawingView(context: Context,attrs: AttributeSet) : View(context,attrs)
     private lateinit var canvusBitmap: Bitmap
     private var brushSize: Float=0.toFloat()
     private  val paths=mutableListOf<FingerPath>()
+    private val undoPaths=mutableListOf<FingerPath>()
 
 
 
@@ -75,6 +76,7 @@ class DrawingView(context: Context,attrs: AttributeSet) : View(context,attrs)
             {
 
                 paths.add(drawPath)
+                drawPath = FingerPath(color, brushSize)
             }
             else -> {
                 return false
@@ -144,8 +146,19 @@ class DrawingView(context: Context,attrs: AttributeSet) : View(context,attrs)
         if(paths.size>0)
         {
             Log.d("DrawingView", "Paths size: ${paths.size}")
-            paths.removeAt(paths.size-1)
-            drawPath.reset()
+            undoPaths.add(paths.removeAt(paths.size-1))
+            //drawPath.reset()
+            invalidate()
+        }
+    }
+
+    fun redoPath()
+    {
+        if(undoPaths.size>0)
+        {
+            Log.d("DrawingView undo", "undoPaths size: ${undoPaths.size}")
+            paths.add(undoPaths.removeAt(undoPaths.size-1))
+            //drawPath.reset()
             invalidate()
         }
     }
