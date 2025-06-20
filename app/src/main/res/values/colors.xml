@@ -7,4 +7,5 @@
     <color name="my_light_primary">#691BF4</color>
     <color name="my_dark_primary">#3700B3</color>
     <color name="dark_background">#121212</color>
+    <color name="dark_nav">#1A0442</color>
 </resources>

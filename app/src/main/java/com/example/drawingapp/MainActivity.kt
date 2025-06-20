@@ -37,6 +37,12 @@ import java.io.File
 import java.io.FileOutputStream
 import kotlin.random.Random
 import android.content.res.Configuration
+import android.content.res.ColorStateList
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+
+
+
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -121,6 +127,35 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         toggle.syncState()
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
+
+        if ((resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) {
+            navigationView.setBackgroundColor(ContextCompat.getColor(this, R.color.dark_nav))
+            navigationView.itemTextColor = ColorStateList.valueOf(Color.WHITE)
+            navigationView.itemIconTintList = ColorStateList.valueOf(Color.WHITE)
+
+            val menu = navigationView.menu
+            for (i in 0 until menu.size()) {
+                val item = menu.getItem(i)
+
+                val spanTitle = SpannableString(item.title)
+                spanTitle.setSpan(ForegroundColorSpan(Color.WHITE), 0, spanTitle.length, 0)
+                item.title = spanTitle
+
+                // 🔒 Safe null check for submenu
+                val subMenu = item.subMenu
+                if (subMenu != null) {
+                    for (j in 0 until subMenu.size()) {
+                        val subItem = subMenu.getItem(j)
+                        val subSpan = SpannableString(subItem.title)
+                        subSpan.setSpan(ForegroundColorSpan(Color.WHITE), 0, subSpan.length, 0)
+                        subItem.title = subSpan
+                    }
+                }
+            }
+        }
+
+
+
         navigationView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.dark_mode -> {
@@ -175,6 +210,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val bgColor = if (isDarkMode) ContextCompat.getColor(this, R.color.dark_background) else ContextCompat.getColor(this, R.color.white)
         rootLayout.setBackgroundColor(bgColor)
         // *** end fix ***
+
+
 
         listOf(
             purpleButton, redButton, greenButton, blueButton, orangeButton,
