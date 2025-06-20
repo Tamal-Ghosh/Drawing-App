@@ -27,7 +27,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="10dp"
-        android:background="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/constraint_layout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -53,8 +52,10 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -66,61 +67,73 @@
         app:layout_constraintBottom_toTopOf="@+id/Constraint_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="5dp"
         app:layout_constraintTop_toBottomOf="@+id/Constraint_layout3">
 
 
         <ImageButton
             android:id="@+id/purple_button"
-            android:layout_width="30dp"
+            android:layout_width="0dp"
             android:layout_height="30dp"
             android:background="@drawable/purple_bg"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/red_button"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
 
 
         <ImageButton
             android:id="@+id/red_button"
-            android:layout_width="30dp"
+            android:layout_width="0dp"
             android:layout_height="30dp"
             android:background="@drawable/red_bg"
             app:layout_constraintStart_toEndOf="@+id/purple_button"
             app:layout_constraintEnd_toStartOf="@+id/green_button"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
 
         <ImageButton
             android:id="@+id/green_button"
-            android:layout_width="30dp"
+            android:layout_width="0dp"
             android:layout_height="30dp"
             android:background="@drawable/green_bg"
             app:layout_constraintStart_toEndOf="@+id/red_button"
             app:layout_constraintEnd_toStartOf="@+id/blue_button"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
 
 
         <ImageButton
             android:id="@+id/blue_button"
-            android:layout_width="30dp"
+            android:layout_width="0dp"
             android:layout_height="30dp"
             android:background="@drawable/blue_bg"
             app:layout_constraintStart_toEndOf="@+id/green_button"
             app:layout_constraintEnd_toStartOf="@+id/orange_button"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
 
 
         <ImageButton
             android:id="@+id/orange_button"
-            android:layout_width="30dp"
+            android:layout_width="0dp"
             android:layout_height="30dp"
             android:background="@drawable/orange_bg"
             app:layout_constraintStart_toEndOf="@+id/blue_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -131,6 +144,7 @@
         android:id="@+id/Constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/my_light_primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -143,6 +157,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/ic_brush"
+        android:background="@android:color/transparent"
+        android:padding="10dp"
         app:layout_constraintEnd_toStartOf="@+id/save_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -156,6 +172,8 @@
             android:layout_height="50dp"
             android:src="@drawable/save"
             android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
             app:layout_constraintStart_toEndOf="@id/brush_button"
             app:layout_constraintEnd_toStartOf="@+id/gallery_button"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -168,6 +186,8 @@
             android:layout_height="50dp"
             android:src="@drawable/gallary"
             android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
             app:layout_constraintStart_toEndOf="@id/save_button"
             app:layout_constraintEnd_toStartOf="@+id/undo_button"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -181,6 +201,8 @@
             android:layout_height="50dp"
             android:scaleType="fitCenter"
             android:src="@drawable/undo"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/redo_button"
             app:layout_constraintStart_toEndOf="@id/gallery_button"
@@ -193,6 +215,8 @@
             android:layout_height="50dp"
             android:scaleType="fitCenter"
             android:src="@drawable/redo"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/colorPicker_button"
             app:layout_constraintStart_toEndOf="@id/undo_button"
@@ -205,6 +229,8 @@
             android:layout_height="50dp"
             android:scaleType="fitCenter"
             android:src="@drawable/colour_container"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/bg_colorPicker_button"
             app:layout_constraintStart_toEndOf="@id/redo_button"
@@ -217,6 +243,8 @@
             android:layout_height="50dp"
             android:src="@drawable/bg_color"
             android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
             app:layout_constraintStart_toEndOf="@id/colorPicker_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
